@@ -10,8 +10,8 @@ import (
 func main() {
 	// Create GXR instance
 	g, err := gxr.NewWithOptions(gxr.Options{
-		SourceDir:  "./client",
 		PublicPath: "/public",
+		SourceDir:  "./",
 	})
 	if err != nil {
 		panic(err)
@@ -22,7 +22,7 @@ func main() {
 
 	// Handle main page
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		html, err := g.Render("pages/index.tsx", map[string]interface{}{
+		html, err := g.Render("./client/pages/index.tsx", map[string]interface{}{
 			"title":        "GXR Example",
 			"initialCount": 0,
 		})

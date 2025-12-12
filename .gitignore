@@ -4,3 +4,4 @@ public/*.js
 public/.gxr/
 *.log
 .DS_Store
+.next
