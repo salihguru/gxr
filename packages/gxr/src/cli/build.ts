@@ -34,9 +34,10 @@ function hasUseClientDirective(filePath: string): boolean {
   // Remove BOM if present (common in files from Windows editors)
   const cleanContent = content.replace(/^\uFEFF/, "");
   
-  // Pattern: Start of file, optional whitespace, "use client" or 'use client', 
+  // Pattern: Start of file, optional whitespace, matching quotes around "use client", 
   // optional semicolon, followed by whitespace/newline or end
-  const useClientPattern = /^\s*["']use client["']\s*;?\s*(?:\n|$)/;
+  // Using backreference (\1) to ensure opening and closing quotes match
+  const useClientPattern = /^\s*(["'])use client\1\s*;?\s*(?:\n|$)/;
   
   return useClientPattern.test(cleanContent);
 }
@@ -136,7 +137,9 @@ import type { ComponentType } from "react";
 
 ${imports}
 
-const clientComponents: Record<string, ComponentType<any>> = {
+// Registry of client components for hydration
+// Using 'any' for props as they come from JSON.parse() of server-rendered data
+const clientComponents: Record<string, ComponentType<Record<string, unknown>>> = {
 ${registry}
 };
 

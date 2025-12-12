@@ -38,8 +38,8 @@ export async function watch(options: BuildOptions): Promise<void> {
       try {
         await build(options);
       } catch (err) {
-        // Error is already logged by build(), just acknowledge the failure
-        console.error("Build failed. Waiting for changes...");
+        // Build already logs detailed errors, provide a helpful summary
+        console.error("\n⏳ Watching for changes... Fix the errors above and save to retry.");
       } finally {
         isBuildInProgress = false;
         
