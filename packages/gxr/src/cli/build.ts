@@ -44,11 +44,11 @@ function findClientComponents(componentsDir: string): ClientComponent[] {
 /**
  * Generate the hydration entry file
  */
-function generateHydrateEntry(components: ClientComponent[], componentsDir: string): string {
+function generateHydrateEntry(components: ClientComponent[], hydrateDir: string): string {
   const imports = components
     .map((c) => {
-      const relativePath = path.relative(path.dirname(componentsDir), c.path).replace(/\\/g, "/");
-      return `import ${c.name}Component from "../${relativePath}";`;
+      const relativePath = path.relative(hydrateDir, c.path).replace(/\\/g, "/");
+      return `import ${c.name}Component from "${relativePath}";`;
     })
     .join("\n");
 
@@ -141,7 +141,7 @@ export async function build(options: BuildOptions): Promise<void> {
     fs.mkdirSync(tempDir, { recursive: true });
   }
 
-  const hydrateEntry = generateHydrateEntry(clientComponents, componentsDir);
+  const hydrateEntry = generateHydrateEntry(clientComponents, tempDir);
   const hydrateEntryPath = path.join(tempDir, "hydrate.tsx");
   fs.writeFileSync(hydrateEntryPath, hydrateEntry);
   console.log("✨ Generated hydration entry");

@@ -4,8 +4,8 @@
   "private": true,
   "description": "Basic GXR example application",
   "scripts": {
-    "build": "npx --package=../packages/gxr gxr build",
-    "watch": "npx --package=../packages/gxr gxr watch",
+    "build": "npx --package=../../packages/gxr gxr build",
+    "watch": "npx --package=../../packages/gxr gxr watch",
     "start": "npm run build && go run ."
   },
   "dependencies": {

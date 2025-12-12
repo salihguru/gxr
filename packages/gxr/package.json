@@ -1,6 +1,6 @@
 {
   "name": "gxr",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "GXR - Go x React SSR Framework CLI and Runtime",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
