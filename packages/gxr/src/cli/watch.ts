@@ -14,21 +14,43 @@ export async function watch(options: BuildOptions): Promise<void> {
   // Initial build
   await build(options);
 
-  // Watch for changes
+  // Watch for changes with debouncing and build lock to prevent race conditions
   let debounceTimer: NodeJS.Timeout | null = null;
+  let isBuildInProgress = false;
+  let pendingRebuild = false;
 
   const rebuild = () => {
     if (debounceTimer) {
       clearTimeout(debounceTimer);
     }
+    
+    // Use a longer debounce (300ms) to handle rapid file saves and editor auto-save
     debounceTimer = setTimeout(async () => {
+      // If a build is already running, mark that we need another one after it completes
+      if (isBuildInProgress) {
+        pendingRebuild = true;
+        return;
+      }
+
+      isBuildInProgress = true;
       console.log("\n🔄 Rebuilding...\n");
+      
       try {
         await build(options);
       } catch (err) {
-        console.error("Build failed:", err);
+        // Build already logs detailed errors, provide a helpful summary
+        console.error("\n⏳ Watching for changes... Fix the errors above and save to retry.");
+      } finally {
+        isBuildInProgress = false;
+        
+        // If changes occurred during build, trigger another rebuild
+        if (pendingRebuild) {
+          pendingRebuild = false;
+          console.log("📝 Changes detected during build, rebuilding...");
+          rebuild();
+        }
       }
-    }, 100);
+    }, 300);
   };
 
   // Watch components directory
@@ -39,6 +61,9 @@ export async function watch(options: BuildOptions): Promise<void> {
         rebuild();
       }
     });
+  } else {
+    console.warn(`⚠️  Components directory not found: ${componentsDir}`);
+    console.warn("   Create the directory and add components to start watching.");
   }
 
   // Keep process running
