@@ -1,0 +1,6 @@
+node_modules/
+dist/
+public/*.js
+public/.gxr/
+*.log
+.DS_Store

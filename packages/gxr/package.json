@@ -1,0 +1,40 @@
+{
+  "name": "gxr",
+  "version": "0.1.1",
+  "description": "GXR - Go x React SSR Framework CLI and Runtime",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "gxr": "./dist/cli/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "react",
+    "ssr",
+    "golang",
+    "hydration",
+    "server-side-rendering",
+    "framework"
+  ],
+  "author": "Sami Salih İbrahimbaş",
+  "license": "MIT",
+  "dependencies": {
+    "esbuild": "^0.27.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "@types/react": "^19.2.7",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "gxr-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GXR - Go x React SSR Framework",
+  "workspaces": [
+    "packages/*",
+    "examples/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "dev": "npm run dev --workspace=examples/basic",
+    "example": "npm run start --workspace=examples/basic"
+  },
+  "author": "Sami Salih İbrahimbaş",
+  "license": "MIT"
+}
