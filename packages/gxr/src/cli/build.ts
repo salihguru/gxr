@@ -47,17 +47,29 @@ function hasUseClientDirective(filePath: string): boolean {
  * when components with the same name exist in different directories.
  * e.g., "forms/Button" -> "FormsButton", "Button" -> "Button"
  */
+// Helper to sanitize a string to a valid JS identifier (PascalCase, no invalid chars, no leading digit)
+function sanitizeIdentifier(str: string): string {
+  // Remove invalid characters, split on non-alphanumeric, capitalize each part, join
+  const parts = str.split(/[^a-zA-Z0-9]/).filter(Boolean);
+  let id = parts.map(part => part.charAt(0).toUpperCase() + part.slice(1)).join("");
+  // If starts with digit, prefix with underscore
+  if (/^[0-9]/.test(id)) {
+    id = "_" + id;
+  }
+  return id;
+}
+
 function generateUniqueImportName(relativePath: string, filename: string): string {
-  const baseName = path.basename(filename, path.extname(filename));
+  const baseName = sanitizeIdentifier(path.basename(filename, path.extname(filename)));
   
   if (!relativePath) {
     return baseName;
   }
   
-  // Convert path segments to PascalCase and combine with component name
+  // Convert path segments to PascalCase, sanitize, and combine with component name
   const pathParts = relativePath.split(path.sep).filter(Boolean);
   const pathPrefix = pathParts
-    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+    .map(part => sanitizeIdentifier(part))
     .join("");
   
   return pathPrefix + baseName;
